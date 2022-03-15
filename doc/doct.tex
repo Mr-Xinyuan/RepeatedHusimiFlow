@@ -1,0 +1,80 @@
+\documentclass[UTF8]{ctexart}
+\usepackage{algorithm}
+\usepackage{algorithmic}
+\usepackage{braket}
+\usepackage{amsmath}
+
+\begin{document}
+流算符（flux operator）的本征态可以写为
+\begin{equation}
+    \braket{\mathbf{r}\vert\mathbf{\lambda}_{\sigma,i,\pm}}=\braket{\mathbf{r}\vert\mathbf{r}_0,\sigma}\pm\frac{\mathrm{i}}{\sigma}\mathbf{e}_i\cdot(\mathbf{r}-\mathbf{r}_0)\braket{\mathbf{r}\vert\mathbf{r}_0,\sigma}
+    \label{eqa:eigstate}
+\end{equation}
+式(\ref{eqa:eigstate})中与相干态之间应该有些联系，因此定义
+\begin{equation}
+    \braket{\mathbf{r}|\mathbf{\lambda},\mathbf{k}_0,\sigma}=N^{^{d/2}}_{\sigma}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}
+    \label{eqa:newdefine}
+\end{equation}
+其中$N_\sigma=\frac{1}{\sigma\sqrt{\pi/2}}$
+\begin{equation}
+    \begin{aligned}
+    \Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma} &= \int \,dr\,\Braket{\mathbf{\psi}|\mathbf{r}}\Braket{\mathbf{r}|\mathbf{\lambda},\mathbf{k}_0,\sigma}\\
+                                                            &= \int \,dr\,\psi(\mathbf{r})\,N_{\sigma}^{d/2}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}} 
+    \label{eqa:husimifuction0}
+    \end{aligned}
+\end{equation}
+%%
+将式（\ref{eqa:husimifuction0}）取模方，可得到Husimi函数，即
+\begin{equation}
+    \mathrm{Hu}(\mathbf{r}_0,\mathbf{k}_0, \sigma,\psi(\mathbf{r}))=\left\lvert\Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma}\right\rvert^2  
+    \label{eqa:husimifuction1}
+\end{equation}
+
+Husimi向量$\mathbf{v}$可以通过将加权每个波矢$\mathbf{k}_0$得到，即
+\begin{equation}
+    \mathbf{Hu}(\mathbf{r}_0,\sigma,\psi(\mathbf{r}))=\int \mathbf{k}_0\left\lvert\Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma}\right\rvert^2\,\mathrm{d}^d\,\mathbf{k}_0
+    \label{eqa:husimiflux}
+    \end{equation}
+将式(\ref{eqa:husimiflux})称之为Husimi流。
+
+若$\mathbf{k}_0$是离散的，则式（\ref{eqa:husimiflux}）应写为
+\begin{equation}
+    \mathbf{Hu}(\mathbf{r}_0,\sigma,\psi(\mathbf{r}))= \sum_{j}\,\mathbf{k}_j\left\lvert\Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_j,\sigma}\right\rvert^2
+    \label{eqa:dishusimiflux}
+\end{equation}
+
+如果占主导优势的平面波函数在一个点可以有效的在k-空间分离。相干态的动量不确定度能解决它们。我们可以利用算法\ref{alg:maa}找到波矢的数值。
+
+\begin{algorithm}[htb] 
+    \caption{多模态分析法（MAA:Multi-Modal Analysis）}
+    \label{alg:maa}
+    \begin{algorithmic}[1]
+        \STATE 对M波矢\{$\mathbf{k}^{test}_{i}$\}生成的$\psi=\mathrm{e}^{\mathrm{i}\mathbf{k}_i^{test}\cdot\mathbf{r}}$ ，创建一组N波矢\{$\mathbf{k}_i$\}上的模板。两组波矢都位于色散等值线上。每个模板存储为一个值$\mathbf{u}_i$(长度M)的矢量，对应于方程(\ref{eqa:husimifuction1})上的$\mathbf{k}_j$;
+        \label{alg:maastep:create}
+        \STATE 度规由$d_i=\mathbf{v}\cdot\mathbf{u}_i$给出，其中矢量$\mathbf{v}$表示Husimi矢量，在步骤\ref{alg:maastep:create})中为每个模板计算;
+        \STATE 存储集合{$d_i$}的极大值和对应的波矢$\mathbf{k}^{test}_i$;
+        \STATE 带波矢$\mathbf{k}^{test}_i$的轨迹的贡献由重新加权的矢量决定$\mathbf{u}_i\frac{d_i}{\mathbf{u}_i\cdot\mathbf{u}_i}$;
+        \STATE Husimi矢量减去加权后的模板矢量，即$\mathbf{v}_i \rightarrow \mathbf{v}_i - \mathbf{u}_i\frac{d_i}{\mathbf{u}_i\cdot\mathbf{u}_i}$;
+        \STATE 将$\mathbf{v}$的所有负元素设为零;
+        \label {alg:maastep:loopend}
+        \STATE 重复步骤\ref{alg:maastep:create})\,-\,\ref{alg:maastep:loopend})直到度量$d_i$低于一个阈值;
+        \STATE 矢量集合{$d_i\,\mathbf{k}^{test}_i$}用于近似处理后的Husimi流;
+    \end{algorithmic}
+\end{algorithm}
+
+%对于Psi=exp(ikr)的Husimi函数的解析解
+%----------------------------------------------------------%
+将$\psi=\mathrm{e}^{\mathrm{i}\mathbf{k}\cdot\mathbf{r}}$代入式(\ref{eqa:husimifuction0})可知
+\begin{equation}
+    \begin{aligned}
+        \Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma} = N_\sigma\int \mathrm{e}^{\mathrm{i}\mathbf{k}\cdot\mathbf{r}}\,N_{\sigma}^{d/2}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}\,\mathrm{d}\mathbf{r}       
+    \end{aligned}
+\end{equation}
+
+
+
+%对\cite{Mason2013}中图1上半部分的重复结果，即$\psi_A=\mathrm{e}^{\mathrm{i}\mathbf{k}_0\mathbf{r}}$如图
+
+%\bibliographystyle{plain}
+%\bibliography{ref} 
+\end{document}
