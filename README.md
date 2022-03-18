@@ -1,6 +1,8 @@
-# MMA算法
+# 重复Husimi图的结果
 
-## 操作
+## MMA算法
+
+### 操作
 
 1.
    - 每个模板$\mathbf{u}_i=[u_i^1\ u_i^1\ \cdots u_i^N]$，其中每个成员$u_i^j=\mathrm{Hu}(\psi^{test},\mathbf{k}_j)$
@@ -49,7 +51,7 @@
 
 6. $\{d_i\mathbf{k}_i^{test}\}$就是Husimi流
 
-## 结果
+### 结果
 
 ![avatar](/figure/b.png)
 ![avatar](/figure/c.png)
