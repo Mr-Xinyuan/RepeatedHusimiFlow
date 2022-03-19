@@ -53,7 +53,7 @@
 
 ### 结果
 
-![avatar](/figure/b.png)
-![avatar](/figure/c.png)
-![avatar](/figure/d.png)
-![avatar](/figure/e.png)
+![avatar](/images/figure/b.png)
+![avatar](/images/figure/c.png)
+![avatar](/images/figure/d.png)
+![avatar](/images/figure/e.png)
