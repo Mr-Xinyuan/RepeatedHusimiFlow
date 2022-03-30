@@ -21,6 +21,10 @@ function [x, y] = WaveFunction(varargin)
     % [List, Delta] = MeshCircleArea(R);
     [List, Delta] = MeshCircleArea(varargin{1});
 
+    if (varargin{2}{3} - varargin{2}{2} > 20) && (varargin{3} == "on")
+        quit
+    end
+
     % calculate the Hamilton matrix
     % [x, y, H] = HamiltonMatrix(R, List, Delta, Type, V);
     if nargin == 4
@@ -67,7 +71,7 @@ function [x, y] = WaveFunction(varargin)
         % varargin{3} strIsShow
         if varargin{3} == "off"
             %set(gca, 'unit', 'centimeters', 'position', [0 0 15 15]);
-            saveas(gca, ['../../images/circular system/' varargin{4} '/' num2str(level) '_' num2str(E(k, k)) '.png'], 'png');
+            saveas(gca, ['../../images/circular system/' varargin{4} '/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
         end
 
     end
@@ -99,14 +103,14 @@ function [Listx, delta_r] = MeshCircleArea(r)
 end
 
 function [x, y, H] = HamiltonMatrix(varargin)
-    r = varargin{1};
-    Listx = varargin{2};
-    delta = varargin{3};
+    % r = varargin{1};
+    % Listx = varargin{2};
+    % delta = varargin{3};
     % Allocate x and y memory space
-    N = sum(Listx);
+    N = sum(varargin{2});
     x = zeros(N, 1);
     y = zeros(N, 1);
-
+    disp(['grid count:' num2str(N)]);
     % In order to produce a sparse matrix
     index = int32(1);
     row_index = zeros(N, 1);
@@ -115,8 +119,8 @@ function [x, y, H] = HamiltonMatrix(varargin)
 
     % calculate H, x, y
     k = int32(1);
-    down = int32(Listx(1));
-    Ny = int32(length(Listx));
+    down = int32(varargin{2}(1));
+    Ny = int32(length(varargin{2}));
 
     % -----------------------------------------------------
     % The difference between different row
@@ -133,19 +137,19 @@ function [x, y, H] = HamiltonMatrix(varargin)
                     up = -down;
 
                     if (i == Ny)
-                        down = -Listx(i);
+                        down = -varargin{2}(i);
                     else
-                        down = (Listx(i + 1) - Listx(i)) / 2;
+                        down = (varargin{2}(i + 1) - varargin{2}(i)) / 2;
                     end
 
                     %%
                     % Find the matrix element
-                    for j = int32(1):Listx(i)
+                    for j = int32(1):varargin{2}(i)
                         % ------------calculate coordinate--------------------
-                        x(k) = double(j - Listx(i) / 2);
-                        y(k) = double(r - i - delta);
+                        x(k) = double(j - varargin{2}(i) / 2);
+                        y(k) = double(varargin{1} - i - varargin{3});
                         % ------------calculate Hamilton matrix---------------
-                        % H(k,k) = 4;
+                        % H(k,k) = 4 + V(r);
                         row_index(index) = k;
                         col_index(index) = k;
                         value_index(index) = 4 + parameter * (x(k) * x(k) + y(k) * y(k));
@@ -159,7 +163,7 @@ function [x, y, H] = HamiltonMatrix(varargin)
                             index = index + 1;
                         end
 
-                        if (j ~= Listx(i))
+                        if (j ~= varargin{2}(i))
                             % H(k, k+1) = -1;
                             row_index(index) = k;
                             col_index(index) = k + 1;
@@ -167,18 +171,18 @@ function [x, y, H] = HamiltonMatrix(varargin)
                             index = index + 1;
                         end
 
-                        if ((j + up) > 0) && (j <= (up + Listx(i)))
+                        if ((j + up) > 0) && (j <= (up + varargin{2}(i)))
                             % H(k, k - Listx(i) - up ) = -1;
                             row_index(index) = k;
-                            col_index(index) = k - Listx(i) - up;
+                            col_index(index) = k - varargin{2}(i) - up;
                             value_index(index) = -1;
                             index = index + 1;
                         end
 
-                        if ((j + down) > 0) && (j <= (down + Listx(i)))
+                        if ((j + down) > 0) && (j <= (down + varargin{2}(i)))
                             % H(k, k + Listx(i) + down) = -1;
                             row_index(index) = k;
-                            col_index(index) = k + Listx(i) + down;
+                            col_index(index) = k + varargin{2}(i) + down;
                             value_index(index) = -1;
                             index = index + 1;
                         end
@@ -195,17 +199,17 @@ function [x, y, H] = HamiltonMatrix(varargin)
                     up = -down;
 
                     if (i == Ny)
-                        down = -Listx(i);
+                        down = -varargin{2}(i);
                     else
-                        down = (Listx(i + 1) - Listx(i)) / 2;
+                        down = (varargin{2}(i + 1) - varargin{2}(i)) / 2;
                     end
 
                     %%
                     % Find the matrix element
-                    for j = 1:Listx(i)
+                    for j = 1:varargin{2}(i)
                         % ------------calculate coordinate--------------------
-                        x(k) = double(j - Listx(i) / 2);
-                        y(k) = double(r - i - delta);
+                        x(k) = double(j - varargin{2}(i) / 2);
+                        y(k) = double(varargin{1} - i - varargin{3});
                         % ------------calculate Hamilton matrix---------------
                         % H(k,k) = 4;
                         row_index(index) = k;
@@ -217,30 +221,30 @@ function [x, y, H] = HamiltonMatrix(varargin)
                             % H(k, k-1) = -1;
                             row_index(index) = k;
                             col_index(index) = k - 1;
-                            value_index(index) = -exp((parameter * y(k)) * 0.5i);
-                            index = index + 1;
-                        end
-
-                        if (j ~= Listx(i))
-                            % H(k, k+1) = -1;
-                            row_index(index) = k;
-                            col_index(index) = k + 1;
                             value_index(index) = -exp(- (parameter * y(k)) * 0.5i);
                             index = index + 1;
                         end
 
-                        if ((j + up) > 0) && (j <= (up + Listx(i)))
+                        if (j ~= varargin{2}(i))
+                            % H(k, k+1) = -1;
+                            row_index(index) = k;
+                            col_index(index) = k + 1;
+                            value_index(index) = -exp((parameter * y(k)) * 0.5i);
+                            index = index + 1;
+                        end
+
+                        if ((j + up) > 0) && (j <= (up + varargin{2}(i)))
                             % H(k, k - Listx(i) - up ) = -1;
                             row_index(index) = k;
-                            col_index(index) = k - Listx(i) - up;
+                            col_index(index) = k - varargin{2}(i) - up;
                             value_index(index) = -exp(- (parameter * x(k)) * 0.5i);
                             index = index + 1;
                         end
 
-                        if ((j + down) > 0) && (j <= (down + Listx(i)))
+                        if ((j + down) > 0) && (j <= (down + varargin{2}(i)))
                             % H(k, k + Listx(i) + down) = -1;
                             row_index(index) = k;
-                            col_index(index) = k + Listx(i) + down;
+                            col_index(index) = k + varargin{2}(i) + down;
                             value_index(index) = -exp((parameter * x(k)) * 0.5i);
                             index = index + 1;
                         end
@@ -252,8 +256,8 @@ function [x, y, H] = HamiltonMatrix(varargin)
 
         end
 
-        x = x + r;
-        y = y + r;
+        x = x + varargin{1};
+        y = y + varargin{1};
     else
         %%
         %well
@@ -261,17 +265,17 @@ function [x, y, H] = HamiltonMatrix(varargin)
             up = -down;
 
             if (i == Ny)
-                down = -Listx(i);
+                down = -varargin{2}(i);
             else
-                down = (Listx(i + 1) - Listx(i)) / 2;
+                down = (varargin{2}(i + 1) - varargin{2}(i)) / 2;
             end
 
             %%
             % Find the matrix element
-            for j = int32(1):Listx(i)
+            for j = int32(1):varargin{2}(i)
                 % ------------calculate coordinate--------------------
-                x(k) = double((j - Listx(i) / 2) + r);
-                y(k) = double(r - i - delta + r);
+                x(k) = double((j - varargin{2}(i) / 2) + varargin{1});
+                y(k) = double(varargin{1} - i - varargin{3} + varargin{1});
                 % ------------calculate Hamilton matrix---------------
                 % H(k,k) = 4;
                 row_index(index) = k;
@@ -287,7 +291,7 @@ function [x, y, H] = HamiltonMatrix(varargin)
                     index = index + 1;
                 end
 
-                if (j ~= Listx(i))
+                if (j ~= varargin{2}(i))
                     % H(k, k+1) = -1;
                     row_index(index) = k;
                     col_index(index) = k + 1;
@@ -295,18 +299,18 @@ function [x, y, H] = HamiltonMatrix(varargin)
                     index = index + 1;
                 end
 
-                if ((j + up) > 0) && (j <= (up + Listx(i)))
+                if ((j + up) > 0) && (j <= (up + varargin{2}(i)))
                     % H(k, k - Listx(i) - up ) = -1;
                     row_index(index) = k;
-                    col_index(index) = k - Listx(i) - up;
+                    col_index(index) = k - varargin{2}(i) - up;
                     value_index(index) = -1;
                     index = index + 1;
                 end
 
-                if ((j + down) > 0) && (j <= (down + Listx(i)))
+                if ((j + down) > 0) && (j <= (down + varargin{2}(i)))
                     % H(k, k + Listx(i) + down) = -1;
                     row_index(index) = k;
-                    col_index(index) = k + Listx(i) + down;
+                    col_index(index) = k + varargin{2}(i) + down;
                     value_index(index) = -1;
                     index = index + 1;
                 end
