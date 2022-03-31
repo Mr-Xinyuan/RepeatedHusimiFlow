@@ -57,3 +57,32 @@
 ![avatar](/images/figure/c.png)
 ![avatar](/images/figure/d.png)
 ![avatar](/images/figure/e.png)
+
+## 无量纲化
+
+其中 a 是格点间距。带“ **'** ”是无量纲量
+
+### 紧束缚近似
+
+$$
+    H = \sum_{i} \epsilon_{i}a_{i}^{\dagger}a_{i}-t\sum_{i,j}a_{i}^{\dagger}a_{j}
+$$
+
+其中$\epsilon_{i}=4t+U_{i},t=\frac{\hbar^2}{2ma^2}$。若存在磁场，则$t_{i,j}=t\mathrm{e}^{\mathrm{i}\frac{qa}{\hbar}\mathbf{A}\cdot(\mathbf{r'}_{i}-\mathbf{r'}_{j})}=t\mathrm{e}^{\mathrm{i}\mathbf{A'}\cdot(\mathbf{r'}_{i}-\mathbf{r'}_{j})}\qquad(\mathbf{A} = \mathbf{A'}\frac{\hbar}{qa})$
+
+- $k = \frac{\sqrt{2mE}}{\hbar} = \sqrt{E'}\frac{\sqrt{2mt}}{\hbar} = \frac{\sqrt{E'}}{a}\rightarrow k'=\sqrt{E'}$
+- $\mathbf{A'}=\frac{qaB_{0}}{2\hbar}(-y\mathbf{e}_{x}+x\mathbf{e}_{y})\rightarrow\mathbf{A'}=\frac{B'_{0}}{2}(-y'\mathbf{e}_{x}+x'\mathbf{e}_{y})$
+
+- $B_{0} = B'_{0}\frac{\hbar}{qa^2}$
+
+### 不确定度
+
+- $x = x'a$
+
+- $k = \frac{k'}{a}$
+
+- $\Delta x = \sigma = \sigma'a$
+
+- $\Delta k = \frac{1}{2\sigma} = \frac{1}{2\sigma'a}$
+
+- $\frac{\Delta k}{k} = \frac{\frac{1}{2\sigma'a}}{\frac{k'}{a}} = \frac{0.5}{\sigma'k'}$如果取$k'=1$，则可得$\frac{\Delta k}{k}=\frac{0.5}{\sigma'}$或$\sigma'=\frac{0.5}{\Delta k/k}$
