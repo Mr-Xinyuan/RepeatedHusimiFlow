@@ -1,26 +1,37 @@
 \documentclass[UTF8]{ctexart}
+
+\usepackage{lmodern}
+\usepackage{amsmath}
 \usepackage{algorithm}
 \usepackage{algorithmic}
+
+\usepackage{enumerate}
+
 \usepackage{braket}
-\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{color}
 
 \begin{document}
+\section*{公式和概念}
+%---------------------------------------%
+%流算符
 流算符（flux operator）的本征态可以写为
 \begin{equation}
-    \braket{\mathbf{r}\vert\mathbf{\lambda}_{\sigma,i,\pm}}=\braket{\mathbf{r}\vert\mathbf{r}_0,\sigma}\pm\frac{\mathrm{i}}{\sigma}\mathbf{e}_i\cdot(\mathbf{r}-\mathbf{r}_0)\braket{\mathbf{r}\vert\mathbf{r}_0,\sigma}
+    \braket{\mathbf{r}|\mathbf{\lambda}_{\sigma,i,\pm}}=\braket{\mathbf{r}|\mathbf{r}_0,\sigma}\pm\frac{\mathrm{i}}{\sigma}\mathbf{e}_i\cdot(\mathbf{r}-\mathbf{r}_0)\braket{\mathbf{r}|\mathbf{r}_0,\sigma}
     \label{eqa:eigstate}
 \end{equation}
 式(\ref{eqa:eigstate})中与相干态之间应该有些联系，因此定义
+%--------------------------------------%
+%
 \begin{equation}
     \braket{\mathbf{r}|\mathbf{\lambda},\mathbf{k}_0,\sigma}=N^{^{d/2}}_{\sigma}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}
     \label{eqa:newdefine}
 \end{equation}
 其中$N_\sigma=\frac{1}{\sigma\sqrt{\pi/2}}$
+%
 \begin{equation}
     \begin{aligned}
-    \Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma} &= \int \,dr\,\Braket{\mathbf{\psi}|\mathbf{r}}\Braket{\mathbf{r}|\mathbf{\lambda},\mathbf{k}_0,\sigma}\\
-                                                            &= \int \,dr\,\psi(\mathbf{r})\,N_{\sigma}^{d/2}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}} 
-    \label{eqa:husimifuction0}
+
     \end{aligned}
 \end{equation}
 %%
@@ -49,7 +60,7 @@ Husimi向量$\mathbf{v}$可以通过将加权每个波矢$\mathbf{k}_0$得到，
     \caption{多模态分析法（MAA:Multi-Modal Analysis）}
     \label{alg:maa}
     \begin{algorithmic}[1]
-        \STATE 对M波矢\{$\mathbf{k}^{test}_{i}$\}生成的$\psi=\mathrm{e}^{\mathrm{i}\mathbf{k}_i^{test}\cdot\mathbf{r}}$ ，创建一组N波矢\{$\mathbf{k}_i$\}上的模板。两组波矢都位于色散等值线上。每个模板存储为一个值$\mathbf{u}_i$(长度M)的矢量，对应于方程(\ref{eqa:husimifuction1})上的$\mathbf{k}_j$;
+        \STATE 对M波矢\{$\mathbf{k}^{test}_{i}$\}生成的$\psi=\mathrm{e}^{\mathrm{i}\mathbf{k}_i^{test}\cdot\mathbf{r}}$ ，创建一组N波矢\{$\mathbf{k}_i$\}上的模板。两组波矢都位于色散等值线上。每个模板存储为一个值$\mathbf{u}_i$(个数为M)的矢量，对应于方程(\ref{eqa:husimifuction1})上的$\mathbf{k}_j$;
         \label{alg:maastep:create}
         \STATE 度规由$d_i=\mathbf{v}\cdot\mathbf{u}_i$给出，其中矢量$\mathbf{v}$表示Husimi矢量，在步骤\ref{alg:maastep:create})中为每个模板计算;
         \STATE 存储集合{$d_i$}的极大值和对应的波矢$\mathbf{k}^{test}_i$;
@@ -62,19 +73,39 @@ Husimi向量$\mathbf{v}$可以通过将加权每个波矢$\mathbf{k}_0$得到，
     \end{algorithmic}
 \end{algorithm}
 
-%对于Psi=exp(ikr)的Husimi函数的解析解
+%求解Psi=exp(ikr)的Husimi函数的解析解
 %----------------------------------------------------------%
 将$\psi=\mathrm{e}^{\mathrm{i}\mathbf{k}\cdot\mathbf{r}}$代入式(\ref{eqa:husimifuction0})可知
 \begin{equation}
     \begin{aligned}
-        \Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma} = N_\sigma\int \mathrm{e}^{\mathrm{i}\mathbf{k}\cdot\mathbf{r}}\,N_{\sigma}^{d/2}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}\,\mathrm{d}\mathbf{r}       
+        \Braket{\mathbf{\psi}|\mathbf{r}_0,\mathbf{k}_0,\sigma}&=N_\sigma \int \mathrm{e}^{\mathrm{i}\mathbf{k}\cdot\mathbf{r}}\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}\,\mathrm{d}\mathbf{r}\\       
+                                                               &=N_\sigma \int \mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}}\mathrm{e}^{\mathrm{i}(\mathbf{k}+\mathbf{k_0})\cdot\mathbf{r}}\,\mathrm{d}\mathbf{r}
     \end{aligned}
 \end{equation}
 
+\newpage
+\section*{猜想}
+D. J. Mason在《Extending the Concept of Probability Flux》中关于Multi-Modal Analysis (MMA)算法的描述如图\ref{img:mma}所示
+\begin{figure}
+    \centering
+    \includegraphics[scale = 1.0]{MMA.png}
+    \caption{《Extending the Concept of Probability Flux》中的MMA算法}
+    \label{img:mma}
+\end{figure}
+\begin{itemize}
+    \item 上次计算时发现$x,y$的取值范围的最小值应在$[-\sigma,-\sigma]$之间时，才能复现论文中的图1的$\psi=\mathrm{e}^{i\mathbf{k}\cdot\mathbf{r}}\text{和}\psi=\cos{\mathbf{k}\cdot\mathbf{r}}$的Husimi矢量。
+    \item 个人对MAA算法中一些变量的看法：
+        \begin{enumerate}
+            \item $\psi_{c}  + \{\mathbf{k}_j\} \rightarrow \mathrm{HuFunction} \rightarrow \{\mathbf{v}\}$ 
+            \item $\psi=\mathrm{e}^{i\mathbf{k}_i^{test}\cdot\mathbf{r}} + \{\mathbf{k}_j\} \rightarrow \mathrm{HuFunction} \rightarrow \{\mathbf{u}_i\}$
+            \item $d_i = \mathbf{v}\cdot\mathbf{u}_i$
+            \item $\max \{ d_i \}$
+            \item $\mathbf{v} \rightarrow \mathbf{v} - \mathbf{u}_i\frac{d_i}{\mathbf{u}_{i}\cdot\mathbf{u}_{i}}$
+            \item {\color{blue} if}\quad$v_i < 0$\\
+                  {\color{blue} then}\quad$v_i$ = 0;
+            \item $\{d_i\mathbf{k}_i^{test} \}$ is the processed Husimi flow.
+        \end{enumerate}
+\end{itemize}
+%
 
-
-%对\cite{Mason2013}中图1上半部分的重复结果，即$\psi_A=\mathrm{e}^{\mathrm{i}\mathbf{k}_0\mathbf{r}}$如图
-
-%\bibliographystyle{plain}
-%\bibliography{ref} 
 \end{document}
