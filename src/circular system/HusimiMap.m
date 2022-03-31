@@ -1,4 +1,4 @@
-function [k, v, k_level, Grid] = HusimiMap(varargin)
+function [k, v, Grid] = HusimiMap(varargin)
     % HusimiMap - Description
     %
     % Syntax: [k, v, k_level, Grid, sigma]  = HusimiMap(R, Level, sigma, Type, V)
@@ -15,55 +15,140 @@ function [k, v, k_level, Grid] = HusimiMap(varargin)
     %       V0 in harmonic potential ($V=V0*r^2$)
     %       B in magnetic potential (magnetic field strength)
     addpath('../utilities');
+    narginchk(4, 5);
 
-    load(strPath, 'E', 'Psi', 'x', 'y');
-
-    % the wave function
-
-    % k = sqrt(E)
-    % detail in README
-    k_level = full(sqrt(E(Level, Level)));
-    clear E;
-
-    % test wavevector
-    N = 32;
+    % test wavevector {k_j}
+    N = 32; %  N equally spaces points in k-space
     theta = linspace(2 * pi / N, 2 * pi, N);
     k = [cos(theta)', sin(theta)'];
     clear theta;
 
-    % utilizing dispersion relation
-    k = k * k_level;
-    %     sigma = sigma / k_level;
+    % wave function Psi
+    Psi = int8(0);
+    load(['../../data/circular system/' varargin{4} '/data.mat'], 'Psi', 'x', 'y');
+    meshPsi = sparse(x, y, Psi(:, varargin{2}));
+    clear Psi;
+    meshPsi = meshPsi./sqrt(sum(sum(abs(meshPsi).^2)));
+    %     sigma = varargin{3} / k_level;
 
-    % test point
+    % sample points
     rate = 2;
-    Grid = MeshTestGrid(R, sigma, rate);
-    % PlotSamplePoints(x,y,Grid);
+    Grid = MeshTestGrid(varargin{1}, varargin{3}, rate);
+    PlotSamplePoints(x, y, Grid);
+    clear x y;
 
-    % calculate Husimi vector
+    % calculate Husimi vector and plot Husimi map
     lenGrid = length(Grid);
     v = zeros(N, lenGrid);
-    tic;
 
-    for index = 1:lenGrid
-        v(:, index) = HusimiVec(k, meshPsi, Grid(index, :), sigma);
+    switch varargin{4}
+        case 'well'
+            % k = sqrt(E)
+            % detail in README
+            load(['../../data/circular system/' varargin{4} '/data.mat'], 'E');
+            k_level = sqrt(E(varargin{2}));
+            clear E ;
+            
+            tic;
+            
+            for index = 1:lenGrid
+                % utilizing dispersion relation
+                v(:, index) = HusimiVec(k* k_level, meshPsi, Grid(index, :), varargin{3});
+            end
+
+            toc;
+            % plot Husimi Map
+            v = v ./ max(max(v));
+            figure;
+            hold on;
+
+            for index = 1:lenGrid
+                PlotHusimiMap(Grid(index, :), v(:, index) * varargin{3} * rate, k);
+            end
+
+            hold off;
+
+        case 'harmonic'
+            % k = sqrt(E-V*(x^2+y^2))
+            % detail in README
+            load(['../../data/circular system/' varargin{4} '/data.mat'], 'E');
+            E_level = E(varargin{2});
+            clear E ;
+            % calculate wavevector
+            % calculate Husimi vector
+            k_tmp = cell(lenGrid, 1);
+            tic;
+
+            for index = 1:lenGrid
+                % utilizing dispersion relation
+                x_tmp = Grid(index, 2) - varargin{1};
+                y_tmp = Grid(index, 1) - varargin{1};
+                k_tmp(index) = {k * sqrt(E_level - varargin{5} * (x_tmp * x_tmp + y_tmp * y_tmp))};
+                v(:, index) = HusimiVec(k_tmp{index}, meshPsi, Grid(index, :), varargin{3});
+            end
+
+            clear x_tmp y_tmp k_tmp;
+            % k = k_tmp;
+
+            toc;
+            tic;
+            % plot Husimi Map
+            v = v ./ max(max(v));
+            figure;
+            hold on;
+
+            for index = 1:lenGrid
+                PlotHusimiMap(Grid(index, :), v(:, index) * varargin{3} * rate, k);
+            end
+
+            hold off;
+            toc;
+        case 'magnetic'
+            % k = sqrt(E))
+            % detail in README
+            load(['../../data/circular system/' varargin{4} '/data.mat'], 'E');
+            E_level = sqrt(E(varargin{2}));
+            clear E ;
+            % calculate wavevector
+            % calculate Husimi vector
+            k_tmp = cell(lenGrid, 1);
+            tic;
+
+            for index = 1:lenGrid
+                % utilizing dispersion relation
+                x_tmp = Grid(index, 2) - varargin{1};
+                y_tmp = Grid(index, 1) - varargin{1};
+                k_tmp(index) = {k * sqrt(E_level - varargin{5} * (x_tmp * x_tmp + y_tmp * y_tmp))};
+                v(:, index) = HusimiVec(k_tmp{index}, meshPsi, Grid(index, :), varargin{3});
+            end
+
+            clear x_tmp y_tmp k;
+            k = k_tmp;
+
+            toc;
+            tic;
+            % plot Husimi Map
+            v = v ./ max(max(v));
+            figure;
+            hold on;
+
+            for index = 1:lenGrid
+                PlotHusimiMap(Grid(index, :), v(:, index) * varargin{3} * rate, k{index});
+            end
+
+            hold off;
+            toc;
     end
 
-    toc;
-    % plot Husimi Map
-    tic;
+    %     v = v ./ max(max(v));
+    %     PlotHusimiMap(Grid, v * varargin{3} * rate, k);
 
-    v = v ./ max(max(v));
-    PlotHusimiMap(Grid, v * sigma * rate, k);
-
-    toc;
-    clear Psi;
-    x1 = 0:0.1:2 * R;
-    y1 = R + sqrt(R^2 - (x1 - R).^2);
-
+    x1 = 0:0.1:2 * varargin{1};
+    y1 = varargin{1} + sqrt(varargin{1}^2 - (x1 - varargin{1}).^2);
     hold on;
     plot(x1, y1, 'k');
-    plot(x1, 2 * R - y1, 'k');
+    plot(x1, 2 * varargin{1} - y1, 'k');
+    axis([1, max(x1) 1, max(y1)]);
     pbaspect([1 1 1]);
     hold off;
 end
@@ -76,9 +161,8 @@ function Grid = MeshTestGrid(r, sigma, rate)
     %
     % -----------generate test position in circular boundary----------
     %
-    r = uint16(r);
-    index = uint16(2);
-    step = uint16(floor(rate * sigma));
+    index = uint32(2);
+    step = floor(rate * sigma);
 
     % scope: 0 ~ 2r
     n = 2 * r;
