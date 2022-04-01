@@ -14,7 +14,7 @@ if STRCMP(isWaveFun,'on')
     % --------------- calculate wave function --------------------
     % setting parameter
     level_scope = {200,1,200};
-    % ! if level_scope > 10, program enters protection status(quit) 
+    % ! if (level_scope > 10) & (isShow = 'on'), program enters protection status(quit) 
     isShow = 'off';
     % harmonic -> V0 = 5e-5;
     % magnetic -> B0 = 2e-3;
