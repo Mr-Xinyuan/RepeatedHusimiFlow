@@ -2,7 +2,7 @@ function PlotSamplePoints(x, y, Grid)
 
     % load('../../data/CircularWell/coord.mat', 'x', 'y');
 
-    % ----------figure test position-------------
+    % ---------- figure sample points -------------
     figure;
     % discretization grid
     plot(x, y, 'g.');

@@ -12,5 +12,5 @@ function v = HusimiVec(k, psi, r0, sigma)
         v(index) = HusimiFun(r0, k(index, :), sigma, psi);
 
     end
-
+    
 end

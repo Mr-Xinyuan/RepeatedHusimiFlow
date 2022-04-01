@@ -1,8 +1,8 @@
-function [x, y] = WaveFunction(varargin)
+function WaveFunction(varargin)
     % WaveFunction - calculating the value of wave function and Saving in the file.
     %
-    % Syntax: x,y = WaveFunction(Radius, Level, strShow, Type)
-    %         x,y = WaveFunction(Radius, Level, strShow, Type, V)
+    % Syntax: WaveFunction(Radius, Level, strShow, Type)
+    %         WaveFunction(Radius, Level, strShow, Type, V)
     %
     % algorithm: finite differential method.
     % model: tightbinding approximation.
@@ -123,6 +123,13 @@ function [x, y, H] = HamiltonMatrix(varargin)
     Ny = int32(length(varargin{2}));
 
     % -----------------------------------------------------
+    % model:
+    %                    o (i-1,j)
+    %                    |
+    %       (i,j-1) o -- o -- o (i,j+1)
+    %                    |
+    %                    o (i+1,j)
+    % -----------------------------------------------------
     % The difference between different row
     % up: i and i - 1
     % down: i and i + 1
@@ -149,6 +156,7 @@ function [x, y, H] = HamiltonMatrix(varargin)
                         x(k) = double(j - varargin{2}(i) / 2);
                         y(k) = double(varargin{1} - i - varargin{3});
                         % ------------calculate Hamilton matrix---------------
+                        % ! difference
                         % H(k,k) = 4 + V(r);
                         row_index(index) = k;
                         col_index(index) = k;
@@ -217,6 +225,7 @@ function [x, y, H] = HamiltonMatrix(varargin)
                         value_index(index) = 4;
                         index = index + 1;
 
+                        % ! difference
                         if (j ~= 1)
                             % H(k, k-1) = -1;
                             row_index(index) = k;

@@ -20,7 +20,7 @@ function PlotHusimiMap(varargin)
     %             'k', ... %   color
     %             'LineWidth', 1.5, ... %   line width
     %             'maxheadsize', 0.5); %   head size
-    quiver(r0(1) * ones(N, 1), r0(2) * ones(N, 1), k(:, 1) .* v, k(:, 2) .* v, 'k','ShowArrowHead', 'off') %   color
+    quiver(r0(1) * ones(N, 1), r0(2) * ones(N, 1), k(:, 1) .* v, k(:, 2) .* v, 'k','ShowArrowHead', 'on');
 
     %   is Saving ?
     if nargin == 3
