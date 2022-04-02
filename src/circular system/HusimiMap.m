@@ -25,7 +25,7 @@ function [k0, v, Grid, E_level] = HusimiMap(varargin)
     % wave function Psi
     Psi = int8(0); % var Psi;
     load(['../../data/circular system/' varargin{4} '/data.mat'], 'Psi', 'x', 'y');
-    meshPsi = sparse(x, y, Psi(:, varargin{2}));
+    meshPsi = sparse(y, x, Psi(:, varargin{2}));
     % meshPsi = meshPsi ./ sqrt(sum(sum(abs(meshPsi).^2))); % norm(meshPsi)
     % meshPsi = meshPsi./max(max(meshPsi));
     clear Psi;

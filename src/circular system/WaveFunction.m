@@ -4,14 +4,15 @@ function WaveFunction(varargin)
     % Syntax: WaveFunction(Radius, Level, strShow, Type)
     %         WaveFunction(Radius, Level, strShow, Type, V)
     %
-    % algorithm: finite differential method.
+    % * algorithm: finite differential method.
     % model: tightbinding approximation.
-    % Radius: system's radius
+    % Radius: system's radius.
     % Level: the scope of level
     % Level{1}: level_max -> calculate the max level
     % Level{2}: level_begin
     % Level{3}: level_end
     % strShow: Show wave function figure
+    % ! 'magnetic': symmetric gauge A=(-yB,xB,0)/2;
     % Type: well, harmonic, magnetic
     % V:    0 in well (no parameter)
     %       V0 in harmonic potential ($V=V0*r^2$)

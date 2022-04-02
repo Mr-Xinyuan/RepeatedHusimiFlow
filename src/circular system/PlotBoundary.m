@@ -14,5 +14,5 @@ function PlotBoundary(R)
     hold off;
     
     pbaspect([1 1 1]);
-    axis([1, max(x1) 1, max(y1)]);
+    axis([0, max(x1) 0, max(y1)]);
 end

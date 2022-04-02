@@ -1,8 +1,8 @@
 delta_k = 0.1; % momentum uncertainty
 R = 65; % system radius
 % Type: well, harmonic, magnetic
-Type = 'well';
-isWaveFun = 'on';
+Type = 'magnetic';
+isWaveFun = 'off';
 %   -----------define sigma-----------
 %
 %       $ Sigma \propto k/\Delta{k} $
@@ -10,7 +10,7 @@ isWaveFun = 'on';
 %
 sigma = 0.5 / delta_k;
 
-if STRCMP(isWaveFun,'on')  
+if strcmp(isWaveFun,'on')  
     % --------------- calculate wave function --------------------
     % setting parameter
     level_scope = {200,1,200};
@@ -21,7 +21,7 @@ if STRCMP(isWaveFun,'on')
     para_Potential = 5e-5;
 
     % ------------------------------------------------------------
-    if STRCMP(Type,'well')  
+    if strcmp(Type,'well')  
         
         WaveFunction(R, level_scope, isShow, Type);
         
@@ -34,13 +34,13 @@ if STRCMP(isWaveFun,'on')
 else
     % --------------- plot raw Husimi Map and processed Husimi map--------------------
     % setting parameter
-    des_level = 152;
+    des_level = 188;
     % *harmonic -> V0 = 5e-5;
     % *magnetic -> B0 = 2e-3;
-    para_Potential = 5e-5;
+    para_Potential = 2e-3;
 
     % ---------------------------------------------------------------------
-    if STRCMP(Type,'well')
+    if strcmp(Type,'well')
         
         [k, v, Grid, E]  = HusimiMap(R, des_level, sigma, Type);
         ProcHusimiMap(R, v, k, Grid, E, sigma, Type);

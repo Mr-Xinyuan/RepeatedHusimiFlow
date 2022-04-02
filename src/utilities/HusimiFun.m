@@ -35,19 +35,23 @@ function res = HusimiFun(r0, k0, sigma, psi)
 
         for index2 = index2_range(1):index2_range(2)
 
+            % * can't optimize calculate
             % if psi(index1, index2) < 1e-7
             %     tmp_j = tmp_j + 1;
             %     continue;
             % end
 
+            % TODO Husimi Function in 'magnetic' Field
+            % ? If $A=\frac{1}{2}\mathbf{r}\times\mathbf{B}$ ====> No change
             % --------- modify --------------
-            % k01 = k0(1) +1e-3 * (index1 - 65);
-            % k02 = k0(2) -1e-3 * (index2 - 65);
+            % // k01 = k0(1) +1e-3 * (index1 - 65);
+            % // k02 = k0(2) -1e-3 * (index2 - 65);
             %   integrand
-            % tmp(tmp_i, tmp_j) = conj(psi(index1, index2))* ...
-            %  exp(((index2 - r0(1))^2 + (index1 - r0(2))^2) * sigma_width)* ...
-            %     exp((k01(1) * index2 + k02(2) * index1) * 1i);
+            % // tmp(tmp_i, tmp_j) = conj(psi(index1, index2))* ...
+            % // exp(((index2 - r0(1))^2 + (index1 - r0(2))^2) * sigma_width)* ...
+            % //  exp((k01(1) * index2 + k02(2) * index1) * 1i);
             % -------------------------------
+
             %   integrand
             tmp(tmp_i, tmp_j) = conj(psi(index1, index2)) ...
             * exp(((index2 - r0(1))^2 + (index1 - r0(2))^2) * sigma_width) ...

@@ -4,7 +4,7 @@ function [d_stored, k_test_stored] = MMA(varargin)
     %   MMA(v, u, k_test, k)
     %   MMA(v, u, k_test, k, r0)
     %
-    eps = 0.2; % threshold
+    eps = 0.3; % threshold
 
     narginchk(3, 5);
     %   v: Husimi
@@ -27,7 +27,6 @@ function [d_stored, k_test_stored] = MMA(varargin)
         r0 = varargin{5};
     end
 
-%     v = v ./ max(v);
     index_test = 1;
 
     while true

@@ -1,7 +1,7 @@
-function [ds, k_test] = ProcHusimiMap(varargin)
+function ProcHusimiMap(varargin)
     % HusimiMap - Description
     %
-    % Syntax:  ds, k_test = ProcHusimiMap(R, v, k0, Grid, E_level, sigma, Type, V)
+    % Syntax:  ProcHusimiMap(R, v, k0, Grid, E_level, sigma, Type, V)
     %
     % Long description                  
     % Radius: system's radius           1

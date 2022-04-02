@@ -62,7 +62,8 @@ k2 = k2 ./ norm(k2);
 
 Psi = PsiC(k1, k2, {Nx, Ny}, r0, sigma, isShow);
 v = HusimiVec(k, Psi, r0, sigma);
-v = v./max(v);
+% normal Husimi vector
+v = v ./ max(v);
 %   --------------------------------------------------------------------
 clear k1 k2
 

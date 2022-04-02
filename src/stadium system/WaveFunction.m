@@ -1,30 +1,31 @@
-function WaveFunction(varargin)
+function WaveFunction(Radius, Level, strShow)
     % WaveFunction - Description
     %
     % Syntax: WaveFunction(Radius, Level, strShow)
     %
     % Radius:system's parameter
-    %
-    narginchk(3, 3);
+    % Level: the scope of level
+    % Level{1}: level_max -> calculate the max level
+    % Level{2}: level_begin
+    % Level{3}: level_end
+    % strShow: Show wave function figure
     % discrete circle boundary
     % [List, Delta] = MeshCircleArea(R);
-    [List, Delta] = MeshStadiumArea(varargin{1});
+    [List, Delta] = MeshStadiumArea(Radius);
 
-    if (varargin{2}{3} - varargin{2}{2} > 20) && (varargin{3} == "on")
+    if (Level{3} - Level{2} > 20) && (strShow == "on")
         quit
     end
 
     % calculate the Hamilton matrix
     % [x, y, H] = HamiltonMatrix(R, List, Delta);
-    [x, y, H] = HamiltonMatrix(varargin{1}, List, Delta);
-    figure;
-    plot(x,y,'.');
+    [x, y, H] = HamiltonMatrix(Radius, List, Delta);
     clear List Delta
 
     %   Psi: the value of wave function
     %   E: the level energy
     % [Psi, E] = eigs(H, level_max, 'sa');
-    [Psi, E] = eigs(H, varargin{2}{1}, 'smallestabs');
+    [Psi, E] = eigs(H, Level{1}, 'smallestabs');
     E = diag(E);
     clear H;
 
@@ -36,13 +37,12 @@ function WaveFunction(varargin)
     Limit = [1, max(x) 1, max(y)];
 
     % level = level_begin:level_end
-    for level = varargin{2}{2}:varargin{2}{3}
+    for level = Level{2}:Level{3}
         meshPsi = sparse(y, x, Psi(:, level));
 
         % ---------------figure wave function---------------
         %
-        % figure('visible', strIsShow);
-        figure('visible', varargin{3});
+        figure('visible', strShow);
 
         % Calculate the modulus square of the wave function
         % plot the modulus square of the wave function
@@ -54,8 +54,7 @@ function WaveFunction(varargin)
 
         %   --------------------save setting---------------------
         %
-        % varargin{3} strIsShow
-        if varargin{3} == "off"
+        if strShow == "off"
             %set(gca, 'unit', 'centimeters', 'position', [0 0 15 15]);
             saveas(gca, ['../../data/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
         end
