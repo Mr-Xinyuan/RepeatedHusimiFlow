@@ -43,7 +43,8 @@ As part of the undergraduate graduation project: repeat the results of the Husim
   $$
     \mathrm{Hu}(\psi,\mathbf{r}_0,\mathbf{k}_0)=|\langle \psi|\mathbf{r}_0,\mathbf{k}_0,\sigma \rangle|^2
   $$
-- **Huismi vector**: $$\mathbf{v}_{Husimi}(\mathbf{r}_{0}) = \mathrm{Hu}\(\psi,\mathbf{r}_{0},\mathbf{k}_{0}\)\mathbf{k}_{0}$$
+- **Huismi vector**: 
+- $\mathbf{v}_{Husimi}(\mathbf{r}_{0}) = \mathrm{Hu}(\psi,\mathbf{r}_{0},\mathbf{k}_{0})\mathbf{k}_{0}$
 - **Husimi map**:$\{\mathbf{k}_{j}\}\rightarrow\{\mathbf{v}_{j}\}$
 
 - **Hamiltonian Matrix**（Tightbinding Approximation Model）
