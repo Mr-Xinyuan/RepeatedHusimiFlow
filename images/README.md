@@ -6,7 +6,6 @@
     │  ├─harmonic
     │  ├─magnetic
     │  └─well
-    ├─figure
     ├─HusimiMap
     └─stadium system
 
