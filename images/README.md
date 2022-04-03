@@ -1,5 +1,15 @@
 # RESULTS SHOW
 
+## Directory
+
+    ├─circular system
+    │  ├─harmonic
+    │  ├─magnetic
+    │  └─well
+    ├─figure
+    ├─HusimiMap
+    └─stadium system
+
 ## Plain wave
 
 - Setting Code
