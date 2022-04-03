@@ -44,7 +44,8 @@ As part of the undergraduate graduation project: repeat the results of the Husim
     \mathrm{Hu}(\psi,\mathbf{r}_0,\mathbf{k}_0)=|\langle \psi|\mathbf{r}_0,\mathbf{k}_0,\sigma \rangle|^2
   $$
 
-- **Huismi vector**: $\mathbf{v}_{Husimi}(\mathbf{r}_0) = \mathrm{Hu}(\psi,\mathbf{r}_0,\mathbf{k}_0)\mathbf{k}_{0}$
+- **Huismi vector**: $\mathbf{v}_{Husimi}(\mathbf{r}_{0}) = \mathrm{Hu}(\psi,\mathbf{r}_{0},\mathbf{k}_{0})\mathbf{k}_{0}$
+  
 - **Husimi map**:$\{\mathbf{k}_{j}\}\rightarrow\{\mathbf{v}_{j}\}$
 
 - **Hamiltonian Matrix**（Tightbinding Approximation Model）
@@ -62,7 +63,7 @@ As part of the undergraduate graduation project: repeat the results of the Husim
   - $\Delta k = \frac{1}{2\sigma} = \frac{1}{2\sigma'a}$
   - $k = \frac{\sqrt{2mE}}{\hbar} = \sqrt{E'}\frac{\sqrt{2mt}}{\hbar} = \frac{\sqrt{E'}}{a}\rightarrow k'=\sqrt{E'}$
   - $V_0=V'_0\frac{a^2}{t}\rightarrow V(r)=V'_0\,r'^2\cdot t$ in harmonic potential.
-  - $\mathbf{A'}=\frac{qaB_{0}}{2\hbar}(-y\mathbf{e}_{x}+x\mathbf{e}_{y})\rightarrow\mathbf{A'}=\frac{B'_{0}}{2}(-y'\mathbf{e}_{x}+x'\mathbf{e}_{y})$
+  - $\mathbf{A'}=\frac{qaB_{0}}{2\hbar}(-y\mathbf{e}_{x}+x\mathbf{e}_{y})\rightarrow\mathbf{A'}=\frac{B'_{0}}{2}(-y'\mathbf{e}_{x}+x'\mathbf{e}_{y})$.
   - $B_{0} = B'_{0}\frac{\hbar}{qa^2}$ in magnetic fields.
 
 - **Magnetic Vector Potential** in **Symmetric Gauge**
