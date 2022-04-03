@@ -45,12 +45,14 @@ function WaveFunction(varargin)
 
     %   ---------------------------------------------------------
     %   save the value of level energy and corresponding to wave function
+    mkdir(['../../data/circular system/' varargin{4}]);
     save (['../../data/circular system/' varargin{4} '/data.mat'], 'Psi', 'E', 'x', 'y');
 
     % figure wave function
     Limit = [1, max(x) 1, max(y)];
 
     % level = level_begin:level_end
+    mkdir(['../../images/circular system/' varargin{4}]);
     for level = varargin{2}{2}:varargin{2}{3}
         meshPsi = sparse(x, y, Psi(:, level));
 

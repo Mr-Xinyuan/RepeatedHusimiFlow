@@ -31,12 +31,14 @@ function WaveFunction(Radius, Level, strShow)
 
     %   ---------------------------------------------------------
     %   save the value of level energy and corresponding to wave function
+    mkdir('../../data/stadium system');
     save ('../../data/stadium system/data.mat', 'Psi', 'E', 'x', 'y');
 
     % figure wave function
     Limit = [1, max(x) 1, max(y)];
 
     % level = level_begin:level_end
+    mkdir('../../images/stadium system');
     for level = Level{2}:Level{3}
         meshPsi = sparse(y, x, Psi(:, level));
 
