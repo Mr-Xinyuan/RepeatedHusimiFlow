@@ -45,7 +45,6 @@ As part of the undergraduate graduation project: repeat the results of the Husim
   $$
 
 - **Huismi vector**: $\mathbf{v}_{Husimi}(\mathbf{r}_{0}) = \mathrm{Hu}(\psi,\mathbf{r}_{0},\mathbf{k}_{0})\mathbf{k}_{0}$
-  
 - **Husimi map**:$\{\mathbf{k}_{j}\}\rightarrow\{\mathbf{v}_{j}\}$
 
 - **Hamiltonian Matrix**（Tightbinding Approximation Model）
