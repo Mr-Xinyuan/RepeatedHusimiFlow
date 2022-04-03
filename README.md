@@ -79,3 +79,7 @@ As part of the undergraduate graduation project: repeat the results of the Husim
 
 - [1] D. J. Mason, M. F. Borunda, and E. J. Heller. *Quantum flux and reverse engineering of quantum wave functions.* EPL (Europhysics Letters), 102(6):60005, 2013.
 - [2] D. J. Mason, M. F. Borunda, and E. J. Heller. Revealing the flux: *Using processed husimi maps to visualize dynamics of bound systems and mesoscopic transport.* Physical Review B, 91(16):165405, 2015.
+
+## Contact
+
+- E-mail: 227128080@qq.com.
