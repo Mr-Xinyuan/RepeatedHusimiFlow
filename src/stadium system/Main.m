@@ -1,7 +1,7 @@
 delta_k = 0.1; % momentum uncertainty
 R = 40; % system radius
 % Type: well, harmonic, magnetic
-isWaveFun = 'off';
+isWaveFun = 'on';
 %   -----------define sigma-----------
 %
 %       $ Sigma \propto k/\Delta{k} $
@@ -17,7 +17,7 @@ if strcmp(isWaveFun, "on")
     % ! if (level_scope > 10) & (isShow = 'on'), program enters protection status(quit)
     isShow = 'off';
     
-    WaveFunction(40, {10, 5, 10}, 'on');
+    WaveFunction(R, level_scope, isShow);
 else
     % --------------- plot raw Husimi Map and processed Husimi map--------------------
     % setting parameter

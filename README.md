@@ -1,88 +1,81 @@
-# 重复Husimi图的结果
+# Repeated Husimi Map
 
-## MMA算法
+As part of the undergraduate graduation project: repeat the results of the Husimi map.
 
-### 操作
+## Directory Structure
 
-1.
-   - 每个模板$\mathbf{u}_i=[u_i^1\ u_i^1\ \cdots u_i^N]$，其中每个成员$u_i^j=\mathrm{Hu}(\psi^{test},\mathbf{k}_j)$
-   - Husimi矢量$\mathbf{v}=[v^1\ v^1\ \cdots v^N]$，其中每个成员$v^j=\mathrm{Hu}(\psi,\mathbf{k}_j)$
+    ├─data
+    │  ├─circular system
+    │  │  ├─harmonic
+    │  │  ├─magnetic
+    │  │  └─well
+    │  └─stadium system
+    ├─doc
+    ├─images
+    │  ├─circular system
+    │  │  ├─harmonic
+    │  │  ├─magnetic
+    │  │  └─well
+    │  ├─figure
+    │  └─stadium system
+    ├─src
+    │  ├─circular system
+    │  ├─MMA
+    │  ├─plain wave
+    │  ├─stadium system
+    │  └─utilities
+    └─test
 
-   ```matlab
-      k = zeros(2, N);
-      theta = linspace(2*pi/N, 2*pi, N);
+- data: To save the calculated data
+- doc: Related documentation
+- images: To save the image(wave function, raw Husimi map, processed Husimi Map)
+- src: Source code
+- test: Related test code
 
-      k(1, :) = cos(theta);
-      k(2, :) = sin(theta);
+## Theory and Concept
 
-      v = HusimiVec(k, Psi, r0, sigma, x, y);
-      u = TestHusmiVec(M, k_test, k, r0, sigma, Nx, Ny);
-   ```
+- **Husimi projection**
+  $$
+   \langle \psi|\mathbf{r}_0,\mathbf{k}_0,\sigma \rangle= \int\psi^{*}(\mathbf{r})\mathrm{e}^{-\frac{(\mathbf{r}-\mathbf{r}_0)^2}{4\sigma^2}+\mathrm{i}\mathbf{k}_0\cdot\mathbf{r}}\,\mathrm{d}\mathbf{r}
+  $$
 
-2.
-   - $d_i = \mathbf{v}\cdot\mathbf{u}_i$
-   - find $\ \max \{d_i\}$
-   - $\max\{d_i\},\ \mathbf{k}_i^{test}$保存
+- **Huismi function**
+  $$
+    \mathrm{Hu}(\psi,\mathbf{r}_0,\mathbf{k}_0)=|\langle \psi|\mathbf{r}_0,\mathbf{k}_0,\sigma \rangle|^2
+  $$
 
-   ```matlab
-      d = v'*u;
+- **Huismi vector**: $\mathbf{v}_{Husimi}(\mathbf{r}_0) = \mathrm{Hu}(\psi,\mathbf{r}_0,\mathbf{k}_0)\mathbf{k}_{0}$
+- **Husimi map**:$\{\mathbf{k}_{j}\}\rightarrow\{\mathbf{v}_{j}\}$
 
-      [d_max, index_max] = max(d);
-
-      % stored k_test and d
-      k_test_stored(:, index_test) = k_test(:, index_max);
-      d_stored(index_test) = d_max;
-   ```
-
-3. $\mathbf{v}\rightarrow\mathbf{v}-\mathbf{u}_i\frac{d_i}{\mathbf{u}_i\cdot\mathbf{u}_i}$
-
-   ```matlab
-      v = v - d_max/(norm(u(:, index_max))^2).*u(:, index_max);
-   ```
-
-4.
-   将$\mathbf{v}$中小于零的值设为零
-
-   ```matlab
-      v(v<0) = 0;
-   ```
-
-5. 重复1)-6) 直到$d_i<eps$
-
-6. $\{d_i\mathbf{k}_i^{test}\}$就是Husimi流
-
-### 结果
-
-![avatar](/images/figure/b.png)
-![avatar](/images/figure/c.png)
-![avatar](/images/figure/d.png)
-![avatar](/images/figure/e.png)
-
-## 无量纲化
-
-其中 a 是格点间距。带“ **'** ”是无量纲量
-
-### 紧束缚近似
-
-$$
+- **Hamiltonian Matrix**（Tightbinding Approximation Model）
+    $$
     H = \sum_{i} \epsilon_{i}a_{i}^{\dagger}a_{i}-t\sum_{i,j}a_{i}^{\dagger}a_{j}
-$$
+    $$
+    where $\epsilon_{i}=4t+U_{i},t=\frac{\hbar^2}{2ma^2}$.If magnetic fields is added, it needs to use the *Peierls substitution*, i.e. $t_{i,j}=t\exp(i\phi),\phi=\frac{q}{\hbar}\mathbf{A}\cdot(\mathbf{r}_i-\mathbf{r}_j)$
 
-其中$\epsilon_{i}=4t+U_{i},t=\frac{\hbar^2}{2ma^2}$。若存在磁场，则$t_{i,j}=t\mathrm{e}^{\mathrm{i}\frac{qa}{\hbar}\mathbf{A}\cdot(\mathbf{r'}_{i}-\mathbf{r'}_{j})}=t\mathrm{e}^{\mathrm{i}\mathbf{A'}\cdot(\mathbf{r'}_{i}-\mathbf{r'}_{j})}\qquad(\mathbf{A} = \mathbf{A'}\frac{\hbar}{qa})$
+- **Nondimensionalization**
+  
+  $a$ is the spacing between lattice points. With ***'*** is a dimensionless quantity
+  - $x = x'a$
+  - $k = \frac{k'}{a}$
+  - $\Delta x = \sigma = \sigma'a$
+  - $\Delta k = \frac{1}{2\sigma} = \frac{1}{2\sigma'a}$
+  - $k = \frac{\sqrt{2mE}}{\hbar} = \sqrt{E'}\frac{\sqrt{2mt}}{\hbar} = \frac{\sqrt{E'}}{a}\rightarrow k'=\sqrt{E'}$
+  - $V_0=V'_0\frac{a^2}{t}\rightarrow V(r)=V'_0\,r'^2\cdot t$ in harmonic potential.
+  - $\mathbf{A'}=\frac{qaB_{0}}{2\hbar}(-y\mathbf{e}_{x}+x\mathbf{e}_{y})\rightarrow\mathbf{A'}=\frac{B'_{0}}{2}(-y'\mathbf{e}_{x}+x'\mathbf{e}_{y})$
+  - $B_{0} = B'_{0}\frac{\hbar}{qa^2}$ in magnetic fields.
 
-- $k = \frac{\sqrt{2mE}}{\hbar} = \sqrt{E'}\frac{\sqrt{2mt}}{\hbar} = \frac{\sqrt{E'}}{a}\rightarrow k'=\sqrt{E'}$
-- $\mathbf{A'}=\frac{qaB_{0}}{2\hbar}(-y\mathbf{e}_{x}+x\mathbf{e}_{y})\rightarrow\mathbf{A'}=\frac{B'_{0}}{2}(-y'\mathbf{e}_{x}+x'\mathbf{e}_{y})$
+- **Magnetic Vector Potential** in **Symmetric Gauge**
+  $$
+  \mathbf{A}=-\frac{1}{2}(\mathbf{r}\times\mathbf{B})=\frac{B_0r}{2}\mathbf{e}_{\theta}=\frac{B_0}{2}(-y\mathbf{e}_x+x\mathbf{e}_y)
+  $$
 
-- $B_{0} = B'_{0}\frac{\hbar}{qa^2}$
+## Cautions
 
-### 不确定度
+- There are protection mechanisms to prevent rendering too many images.
+- Symmetric gauge are used instead of Landau gauge
 
-- $x = x'a$
+## Reference
 
-- $k = \frac{k'}{a}$
-
-- $\Delta x = \sigma = \sigma'a$
-
-- $\Delta k = \frac{1}{2\sigma} = \frac{1}{2\sigma'a}$
-
-- $\frac{\Delta k}{k} = \frac{\frac{1}{2\sigma'a}}{\frac{k'}{a}} = \frac{0.5}{\sigma'k'}$如果取$k'=1$，则可得$\frac{\Delta k}{k}=\frac{0.5}{\sigma'}$或$\sigma'=\frac{0.5}{\Delta k/k}$
+- [1] D. J. Mason, M. F. Borunda, and E. J. Heller. *Quantum flux and reverse engineering of quantum wave functions.* EPL (Europhysics Letters), 102(6):60005, 2013.
+- [2] D. J. Mason, M. F. Borunda, and E. J. Heller. Revealing the flux: *Using processed husimi maps to visualize dynamics of bound systems and mesoscopic transport.* Physical Review B, 91(16):165405, 2015.

@@ -56,7 +56,7 @@ function WaveFunction(Radius, Level, strShow)
         %
         if strShow == "off"
             %set(gca, 'unit', 'centimeters', 'position', [0 0 15 15]);
-            saveas(gca, ['../../data/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
+            saveas(gca, ['../../images/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
         end
 
     end
