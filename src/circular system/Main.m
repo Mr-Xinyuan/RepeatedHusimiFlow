@@ -27,7 +27,7 @@ if strcmp(isWaveFun,'on')
         
     else
 
-        WaveFunction(R, level_scope, isShow, Type, paraPotential);
+        WaveFunction(R, level_scope, isShow, Type, para_Potential);
 
     end
 
