@@ -4,7 +4,7 @@ function [d_stored, k_test_stored] = MMA(varargin)
     %   MMA(v, u, k_test, k)
     %   MMA(v, u, k_test, k, r0)
     %
-    eps = 0.3; % threshold
+    eps = 0.2; % threshold
 
     narginchk(3, 5);
     %   v: Husimi
@@ -55,7 +55,7 @@ function [d_stored, k_test_stored] = MMA(varargin)
             hold on;
 
             for index = 1:index_test
-                quiver(r0(1), r0(2), d_stored(index) * k_test_stored(index, 1), d_stored(index) * k_test_stored(index,2), ...
+                quiver(r0(1), r0(2), d_stored(index) * k_test_stored(index, 1), d_stored(index) * k_test_stored(index, 2), ...
                     'r', ... %   color
                     'LineWidth', 2, ... %   line width
                     'maxheadsize', 0.25); %   head size

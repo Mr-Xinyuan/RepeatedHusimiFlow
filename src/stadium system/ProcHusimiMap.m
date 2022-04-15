@@ -39,7 +39,11 @@ function ProcHusimiMap(R, v, k0, Grid, E_level, sigma)
     hold on;
 
     for index = 1:lenGrid
-        [ds, k_s] = MMA(v(:, index), u, k_test * sqrt(E_level));
+        v_max = max(v);
+
+        [ds, k_s] = MMA(v(:, index) ./ v_max, u, k_test);
+
+        ds = ds * sigma * v_max ./ max(ds);
         PlotProHusimiMap(ds, sigma * k_s, Grid(index, :));
     end
 

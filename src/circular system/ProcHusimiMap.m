@@ -3,7 +3,7 @@ function ProcHusimiMap(varargin)
     %
     % Syntax:  ProcHusimiMap(R, v, k0, Grid, E_level, sigma, Type, V)
     %
-    % Long description                  
+    % Long description
     % Radius: system's radius           1
     % v: Husimi vector                  2
     % k0: test wavevector template      3
@@ -39,7 +39,7 @@ function ProcHusimiMap(varargin)
 
             for index = 1:M
 
-                u(:, index) = exp(-2 * varargin{6}^2 * varargin{5}*((k_test(index, 1) - varargin{3}(:, 1)).^2 + (k_test(index, 2) -  varargin{3}(:, 2)).^2));
+                u(:, index) = exp(-2 * varargin{6}^2 * varargin{5} * ((k_test(index, 1) - varargin{3}(:, 1)).^2 + (k_test(index, 2) - varargin{3}(:, 2)).^2));
 
             end
 
@@ -47,8 +47,12 @@ function ProcHusimiMap(varargin)
             hold on;
 
             for index = 1:lenGrid
-                [ds, k_s] = MMA(varargin{2}(:, index), u, k_test*sqrt(varargin{5}));
-                PlotProHusimiMap(ds, varargin{6} * k_s, varargin{4}(index, :));
+                max_v = max(varargin{2}(:, index));
+
+                [ds, k_s] = MMA(varargin{2}(:, index) ./ max_v, u, k_test);
+
+                ds = ds * max_v * varargin{6} ./ max(ds);
+                PlotProHusimiMap(ds, k_s, varargin{4}(index, :));
             end
 
             hold off;
@@ -60,6 +64,7 @@ function ProcHusimiMap(varargin)
 
             figure;
             hold on;
+
             for index = 1:lenGrid
 
                 % dispersion relation:
@@ -69,12 +74,16 @@ function ProcHusimiMap(varargin)
 
                 for u_index = 1:M
 
-                    u(:, u_index) = exp(-2 * varargin{6}^2 *k_2(var_x, var_y)* ((k_test(u_index, 1) - varargin{3}(:, 1)).^2 + (k_test(u_index, 2) - varargin{3}(:, 2)).^2));
+                    u(:, u_index) = exp(-2 * varargin{6}^2 * k_2(var_x, var_y) * ((k_test(u_index, 1) - varargin{3}(:, 1)).^2 + (k_test(u_index, 2) - varargin{3}(:, 2)).^2));
 
                 end
 
-                [ds, k_s] = MMA(varargin{2}(:, index), u, k_test*sqrt(k_2(var_x, var_y)));
-                PlotProHusimiMap(ds, varargin{6} * k_s, varargin{4}(index, :));
+                max_v = max(varargin{2}(:, index));
+
+                [ds, k_s] = MMA(varargin{2}(:, index) ./ max_v, u, k_test);
+
+                ds = ds * max_v * varargin{6} ./ max(ds);
+                PlotProHusimiMap(ds, k_s, varargin{4}(index, :));
             end
 
             hold off;
@@ -82,11 +91,11 @@ function ProcHusimiMap(varargin)
         case 'magnetic'
             % dispersion relation:
             % $k=\sqrt{E}$
-%             k_test = k_test * sqrt(varargin{5});
+            % k_test = k_test * sqrt(varargin{5});
 
             for index = 1:M
 
-                u(:, index) = exp(-2 * varargin{6}^2 * varargin{5}*((k_test(index, 1) - varargin{3}(:, 1)).^2 + (k_test(index, 2) -  varargin{3}(:, 2)).^2));
+                u(:, index) = exp(-2 * varargin{6}^2 * varargin{5} * ((k_test(index, 1) - varargin{3}(:, 1)).^2 + (k_test(index, 2) - varargin{3}(:, 2)).^2));
 
             end
 
@@ -94,8 +103,12 @@ function ProcHusimiMap(varargin)
             hold on;
 
             for index = 1:lenGrid
-                [ds, k_s] = MMA(varargin{2}(:, index), u, k_test * sqrt(varargin{5}));
-                PlotProHusimiMap(ds, varargin{6} * k_s, varargin{4}(index, :));
+                max_v = max(varargin{2}(:, index));
+
+                [ds, k_s] = MMA(varargin{2}(:, index) ./ max_v, u, k_test);
+
+                ds = ds * max_v * varargin{6} ./ max(ds);
+                PlotProHusimiMap(ds, k_s, varargin{4}(index, :));
             end
 
             hold off;

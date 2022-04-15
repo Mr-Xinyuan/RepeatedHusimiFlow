@@ -13,7 +13,7 @@ delta_k = 0.1; % momentum uncertainty
 %      A: complex plane wave        %
 %      B: cosine plane wave         %
 %-----------------------------------%
-PisType = 'B'; % the type of wave packet
+PisType = 'A'; % the type of wave packet
 isShow = true; % Show wave function
 
 r0 = [60, 60]; % test position

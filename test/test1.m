@@ -1,7 +1,7 @@
 % Type = 'harmonic';
 % Type = 'well';
 Type = 'magnetic';
-level = 233;
+level = 90;
 
 % load(['../data/circular system/' Type '/data.mat'], 'E');
 % figure;

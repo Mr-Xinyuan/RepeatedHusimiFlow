@@ -94,16 +94,14 @@ function [k0, v, Grid, E_level] = HusimiMap(varargin)
             k = sqrt(E_level);
 
             tic;
-            
+
             for index = 1:lenGrid
                 % utilizing dispersion relation
                 % var_x = Grid(index, 1);
                 % var_y = Grid(index, 2);
                 % k0*k(var_x, var_y);
-                 v(:, index) = HusimiVec(k0*k, meshPsi, Grid(index, :), varargin{3});         
+                v(:, index) = HusimiVec(k0 * k, meshPsi, Grid(index, :), varargin{3}, varargin{5});
             end
-
-            clear x_tmp y_tmp k;
 
             toc;
     end
