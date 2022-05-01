@@ -53,6 +53,7 @@ function WaveFunction(varargin)
 
     % level = level_begin:level_end
     mkdir(['../../images/circular system/' varargin{4}]);
+
     for level = varargin{2}{2}:varargin{2}{3}
         meshPsi = sparse(x, y, Psi(:, level));
 
@@ -74,7 +75,8 @@ function WaveFunction(varargin)
         % varargin{3} strIsShow
         if varargin{3} == "off"
             %set(gca, 'unit', 'centimeters', 'position', [0 0 15 15]);
-            saveas(gca, ['../../images/circular system/' varargin{4} '/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
+            % saveas(gca, ['../../images/circular system/' varargin{4} '/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
+            print(['../../images/circular system/' varargin{4} '/' num2str(level) '_' num2str(E(level)) '.png'], '-dpng', '-r500');
         end
 
     end

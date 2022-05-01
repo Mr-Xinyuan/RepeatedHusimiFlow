@@ -39,6 +39,7 @@ function WaveFunction(Radius, Level, strShow)
 
     % level = level_begin:level_end
     mkdir('../../images/stadium system');
+
     for level = Level{2}:Level{3}
         meshPsi = sparse(y, x, Psi(:, level));
 
@@ -58,7 +59,9 @@ function WaveFunction(Radius, Level, strShow)
         %
         if strShow == "off"
             %set(gca, 'unit', 'centimeters', 'position', [0 0 15 15]);
-            saveas(gca, ['../../images/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
+            % saveas(gca, ['../../images/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], 'png');
+            print(['../../images/stadium system/' num2str(level) '_' num2str(E(level)) '.png'], '-dpng', '-r500');
+
         end
 
     end
@@ -133,7 +136,7 @@ function [x, y, H] = HamiltonMatrix(varargin)
         % Find the matrix element
         for j = int32(1):varargin{2}(i)
             % ------------calculate coordinate--------------------
-            x(k) = double((j - varargin{2}(i) / 2) + 2*varargin{1});
+            x(k) = double((j - varargin{2}(i) / 2) + 2 * varargin{1});
             y(k) = double(varargin{1} - i - varargin{3} + varargin{1});
             % ------------calculate Hamilton matrix---------------
             % H(k,k) = 4;
